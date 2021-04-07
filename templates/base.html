@@ -31,7 +31,7 @@
                         <a class="nav-link active" style="width: 200px;" href="/profile">Профиль</a>
                 </ul>
                 <a class="nav-link" href="#"> {% if current_user.is_authenticated %}
-                    <a class="nav-link" href="/logout">Yandex_lyceum</a>
+                    <a class="nav-link" href="/logout">current_user.nickname</a>
                     {% else %}
                     <p>
                         <a class="btn btn-primary " href="/register">Зарегистрироваться</a>

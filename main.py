@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template
-from flask_login import LoginManager, logout_user, login_required
+from flask_login import LoginManager, logout_user, login_required, login_user
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
 from wtforms import PasswordField, BooleanField, SubmitField
@@ -9,6 +9,7 @@ from wtforms.validators import DataRequired
 
 from data import db_session
 from data.users import User
+from forms.RegisterForm import RegisterForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -31,7 +32,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Войти')
 
 
-"""
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -45,7 +46,7 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
-    """
+
 
 
 @app.route('/logout')
@@ -60,7 +61,6 @@ def index():
     return render_template("index.html")
 
 
-"""
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -75,9 +75,10 @@ def reqister():
                                    form=form,
                                    message="Такой пользователь уже есть")
         user = User(
-            name=form.name.data,
+            nickname=form.nickname.data,
+            name=form.nickname.data,
             email=form.email.data,
-            speciality=form.about.data
+            about=form.about.data,
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -85,7 +86,6 @@ def reqister():
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
-"""
 
 if __name__ == '__main__':
     app.run()

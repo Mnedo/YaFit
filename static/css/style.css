@@ -10,3 +10,10 @@
 .navbar-brand {
    font-size: 24px !important;
 }
+
+.form_black {
+   background-color: white !important;
+   border-radius: 8px;
+   padding: 20px;
+   margin-top: 40px;
+}
