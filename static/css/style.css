@@ -4,5 +4,9 @@
   }
 
 .nav-item {
-    font-size: 85;
+    font-size: 20px !important;
+}
+
+.navbar-brand {
+   font-size: 24px !important;
 }
