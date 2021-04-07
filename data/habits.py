@@ -14,6 +14,7 @@ class Habits(SqlAlchemyBase, UserMixin, SerializerMixin):
     period = sqlalchemy.Column(sqlalchemy.Integer)  # days
     about_link = sqlalchemy.Column(sqlalchemy.String)
     count = sqlalchemy.Column(sqlalchemy.Integer)
+    reposts = sqlalchemy.Column(sqlalchemy.Integer)
     creator = sqlalchemy.Column(sqlalchemy.String, sqlalchemy.ForeignKey("users.nickname"))
     user = orm.relation('User')
 
