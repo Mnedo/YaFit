@@ -6,8 +6,9 @@ from werkzeug.utils import redirect
 from wtforms import PasswordField, BooleanField, SubmitField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
-
+import wikipedia
 from data import db_session
+from data.comments import Comments
 from data.habits import Habits
 from data.news import News
 from data.users import User
@@ -59,10 +60,57 @@ def logout():
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
-    news = db_sess.query(News).all()
-    #news = sorted(news, lambda x: len(x.comms.split(';')))
     habits = db_sess.query(Habits).all()
-    return render_template("index.html", top_news=news, top_habits=habits)
+    habits = sorted(habits, key=lambda x: -int(x.reposts))
+    top_habits = []
+    habit_index = 0
+    for habit in habits:
+        habit_index += 1
+        creator_nickname = (db_sess.query(User).filter(User.id == habit.creator).first()).nickname
+        top_habits.append({'id': habit.id,
+                           'type': habit.type,
+                           'period': habit.period,
+                           'about_link': habit.about_link,
+                           'count': habit.count,
+                           'reposts': habit.reposts,
+                           'creator': creator_nickname})
+        if habit_index == 3:
+            break
+    rec_news = db_sess.query(News).all()
+    rec_news = sorted(rec_news, key=lambda x: x.created_date)
+    top_news = []
+    news_index = 0
+    for news in rec_news:
+        news_index += 1
+        creator_nickname = (db_sess.query(User).filter(User.id == habit.creator).first()).nickname
+        comments = []
+        if news.comms:
+            if ';' in news.comms:
+                for com_id in news.comms.split(';'):
+                    comments.append(db_sess.query(Comments).filter(Comments.id == com_id).first())
+            elif len(news.comms) == 1:
+                comments = [db_sess.query(Comments).filter(Comments.id == com_id).first()]
+        else:
+            comments = []
+        if len(comments) > 1:
+            comments = sorted(comments, key=lambda x: x.created_date)
+        comments_main = []
+        for com in comments:
+            comentor_nickname = db_sess.query(User).filter(User.id == habit.creator).first().nickname
+            comments_main.append({'id': com.id,
+                         'content': com.content,
+                         'created_date': com.created_date.strftime("%A %d %B %Y"),
+                         'creator': comentor_nickname})
+        comments = comments_main
+        top_news.append({'id': news.id,
+                         'title': news.title,
+                         'content': news.content,
+                         'created_date': news.created_date.strftime("%A %d %B %Y"),
+                         'comms': comments,
+                         'creator': creator_nickname})
+        if news_index == 5:
+            break
+    return render_template("index.html", top_habits=top_habits, top_news=top_news)
 
 
 @app.route('/register', methods=['GET', 'POST'])

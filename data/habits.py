@@ -5,7 +5,6 @@ from .db_session import SqlAlchemyBase
 from sqlalchemy import orm
 
 
-
 class Habits(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'habits'
     id = sqlalchemy.Column(sqlalchemy.Integer,

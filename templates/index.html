@@ -1,18 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="page_border">
-        <p>Это типа новость</p>
-        <p>Название</p>
-        <p>Рейтинг</p>
-        <p>Узу</p>
-        <p>Классно</p>
+<!-- Привычки -->
+<div class="page_border">
+    <h2>Сейчас в тренде &#128293;</h2>
+
+    {% for habit in top_habits%}
+    <hr>
+    <div class="menu_item">
+        <h3>{{habit['type']}}
+            <div class="reposts">
+                {{habit['reposts']}} reposts
+            </div>
+        </h3>
     </div>
-    <div class="page_border">
-        <p>Это типа привычки</p>
-        <p>Название</p>
-        <p>Рейтинг</p>
-        <p>Узу</p>
-        <p>Классно</p>
+    <div class="menu_item">
+        <p>{{habit['about_link']}}</p>
     </div>
+    {% if current_user.is_authenticated %}
+    <div>
+        <a href="/habits_repost/{{ habit['id'] }}" class="btn btn-warning">Добавить к себе</a>
+    </div>
+    {% endif %}
+    </hr>
+    {% endfor %}
+</div>
+<!-- Новости -->
+<div class="page_border">
+    <h2>Самое новое &#128172;</h2>
+    {% for new in top_news%}
+    <div class="page_border" style="background-color: #121d2f !important;">
+        <div class="menu_item">
+            <h3>{{new['creator']}}: {{new['title']}}</h3>
+        </div>
+        <div class="reposts">
+            <p>{{new['created_date']}}</p>
+        </div>
+        <div class="menu_item">
+            <p>{{new['content']}}</p>
+        </div>
+        {% if new['comms'] %}
+        <div class="menu_item">
+            <h6>Комментарии</h6>
+            {% for com in new['comms'] %}
+            <div class="com_label" style="margin-left: 20px; padding: 0; margin-top: 0; margin-bottom;">
+
+                <p style="font-size: 10px;">{{com['creator']}} - {{com['created_date']}}</p>
+                <p style="font-size: 9px;">{{com['content']}}
+                    <a href="/new_add/{{ new['id'] }}" class="btn btn-primary"
+                       style=" height:25px; width:135px; font-size: 10px; margin-bottom:5px; margin-left: 30px;">Оставить
+                        комментарий</a></p></div>
+            <hr style="color: white; background-color: white; padding: 0; margin-top: 0; margin-bottom;">
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+    </div>
+
+    {% endfor %}
+
+</div>
 {% endblock %}

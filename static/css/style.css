@@ -31,8 +31,39 @@
    color: white !important;
    border: 2px solid #45464F;
    border-radius: 10px;
-   padding: 20px;
+   padding: 20px !important;
    margin: 0 auto;
    margin-top: 30px;
+}
+
+.menu_item {
+   padding: 5px !important;
+   font-size: 15px !important;
+}
+hr {
+   background-color: #FB4229;
+   color: #FB4229;
+}
+.reposts {
+    color: #FB4229 !important;
+    font-size: 8px !important;
+    text-align: right;
+}
+
+.btn-warning {
+    background-color: #FB4229 !important;
+    border: 2px #FB4229 !important;
+}
+
+.comments {
+   font-size: 13px !important;
+}
+
+.com_label {
+   background-color: #121d2f !important;
+   color: white !important;
+   border: 2px solid #121d2f;
+   width: 25%;
+   border-radius: 10px;
 }
 
