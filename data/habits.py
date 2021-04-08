@@ -15,7 +15,7 @@ class Habits(SqlAlchemyBase, UserMixin, SerializerMixin):
     about_link = sqlalchemy.Column(sqlalchemy.String)
     count = sqlalchemy.Column(sqlalchemy.Integer)
     reposts = sqlalchemy.Column(sqlalchemy.Integer)
-    creator = sqlalchemy.Column(sqlalchemy.String, sqlalchemy.ForeignKey("users.nickname"))
+    creator = sqlalchemy.Column(sqlalchemy.String, sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
 
     # jobs = orm.relation("Jobs", back_populates='user')
