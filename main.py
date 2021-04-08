@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template
-from flask_login import LoginManager, logout_user, login_required, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
 from wtforms import PasswordField, BooleanField, SubmitField
@@ -32,7 +32,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Войти')
 
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -46,7 +45,6 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
-
 
 
 @app.route('/logout')

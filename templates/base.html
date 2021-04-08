@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="/static/img/YaFit_logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?<?=time()?>">
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -15,7 +15,10 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" style="width: 250px;" href="/">YaFit</a>
+            <a class="navbar-brand" style="width: 250px;" href="/">
+                <img src="/static/img/YaFit_logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                YaFit
+            </a>
             <div class="collapse navbar-collapse">
                 <ul class="mx-auto navbar-nav">
                     <li class="nav-item">
@@ -30,8 +33,8 @@
                     <li class="nav-item">
                         <a class="nav-link active" style="width: 200px;" href="/profile">Профиль</a>
                 </ul>
-                <a class="nav-link" href="#"> {% if current_user.is_authenticated %}
-                    <a class="nav-link" href="/logout">current_user.nickname</a>
+                {% if current_user.is_authenticated %}
+                    <a class="navbar-brand" href="/logout">{{current_user.nickname}}</a>
                     {% else %}
                     <p>
                         <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
