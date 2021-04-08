@@ -8,6 +8,8 @@ from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
 
 from data import db_session
+from data.habits import Habits
+from data.news import News
 from data.users import User
 from forms.RegisterForm import RegisterForm
 
@@ -56,7 +58,11 @@ def logout():
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).all()
+    #news = sorted(news, lambda x: len(x.comms.split(';')))
+    habits = db_sess.query(Habits).all()
+    return render_template("index.html", top_news=news, top_habits=habits)
 
 
 @app.route('/register', methods=['GET', 'POST'])

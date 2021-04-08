@@ -4,8 +4,16 @@
   }
 
 .nav-item {
+    color: black;
+    font-weight: 400;
     font-size: 20px !important;
 }
+
+.nav-item:hover {
+    font-weight: 500;
+    font-size: 20px !important;
+}
+
 
 .navbar-brand {
    font-size: 24px !important;
@@ -17,3 +25,14 @@
    padding: 20px;
    margin-top: 40px;
 }
+
+.page_border {
+   background-color: #272932 !important;
+   color: white !important;
+   border: 2px solid #45464F;
+   border-radius: 10px;
+   padding: 20px;
+   margin: 0 auto;
+   margin-top: 30px;
+}
+

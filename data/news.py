@@ -18,6 +18,5 @@ class News(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey("users.id"))
     comms = sqlalchemy.Column(sqlalchemy.String)  # id_1;id_2
     user = orm.relation('User')
-    comments = orm.relation("Comments", back_populates='news')
 
     # categories = orm.relation("Category", secondary="association", backref="news")
