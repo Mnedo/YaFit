@@ -1,12 +1,12 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
 from wtforms import PasswordField, BooleanField, SubmitField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
-import wikipedia
+# import wikipedia
 from data import db_session
 from data.comments import Comments
 from data.habits import Habits
@@ -137,6 +137,19 @@ def reqister():
         db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route("/profile",  methods=['GET', 'POST'])
+def add_habit():
+    # db_sess = db_session.create_session()
+    # habit = Habits()
+    # habit.type = request.form['habit_name']
+    # habit.period = request.form['habit_duration']
+    # habit.about_link = request.form['habit_description']
+    # db_sess.add(habit)
+    # db_sess.commit()
+
+    return render_template("add_habit.html")
 
 
 if __name__ == '__main__':
