@@ -98,9 +98,9 @@ def index():
         for com in comments:
             comentor_nickname = db_sess.query(User).filter(User.id == habit.creator).first().nickname
             comments_main.append({'id': com.id,
-                         'content': com.content,
-                         'created_date': com.created_date.strftime("%A %d %B %Y"),
-                         'creator': comentor_nickname})
+                                  'content': com.content,
+                                  'created_date': com.created_date.strftime("%A %d %B %Y"),
+                                  'creator': comentor_nickname})
         comments = comments_main
         top_news.append({'id': news.id,
                          'title': news.title,
@@ -137,6 +137,10 @@ def reqister():
         db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
+
+@app.route('/info', methods=['GET', 'POST'])
+def about_page():
+    return render_template('about.html')
 
 
 @app.route("/profile",  methods=['GET', 'POST'])

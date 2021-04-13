@@ -19,7 +19,7 @@
     </div>
     {% if current_user.is_authenticated %}
     <div>
-        <a href="/habits_repost/{{ habit['id'] }}" class="btn btn-warning">Добавить к себе</a>
+        <a href="/add_habit/{{ habit['id'] }}" class="btn btn-warning">Добавить к себе</a>
     </div>
     {% endif %}
     </hr>
