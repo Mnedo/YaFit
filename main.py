@@ -13,6 +13,7 @@ from data.habits import Habits
 from data.news import News
 from data.users import User
 from forms.RegisterForm import RegisterForm
+from forms.AddHabit import AddHabitForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -143,15 +144,17 @@ def about_page():
     return render_template('about.html')
 
 
-@app.route("/profile",  methods=['GET', 'POST'])
+@app.route("/add_habit",  methods=['GET', 'POST'])
 def add_habit():
-    # db_sess = db_session.create_session()
-    # habit = Habits()
-    # habit.type = request.form['habit_name']
-    # habit.period = request.form['habit_duration']
-    # habit.about_link = request.form['habit_description']
-    # db_sess.add(habit)
-    # db_sess.commit()
+    form = AddHabitForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        habit = Habits()
+        habit.type = request.form['habit_name']
+        habit.period = request.form['habit_duration']
+        habit.about_link = request.form['habit_description']
+        db_sess.add(habit)
+        db_sess.commit()
 
     return render_template("add_habit.html")
 
