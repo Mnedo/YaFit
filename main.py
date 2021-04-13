@@ -139,6 +139,7 @@ def reqister():
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
+
 @app.route('/info', methods=['GET', 'POST'])
 def about_page():
     return render_template('about.html')
@@ -150,13 +151,15 @@ def add_habit():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         habit = Habits()
-        habit.type = request.form['habit_name']
-        habit.period = request.form['habit_duration']
-        habit.about_link = request.form['habit_description']
+        habit.type = form.habit_name.data
+        habit.period = form.duration.data
+        habit.about_link = form.about_habit.data
+        habit.count = 0
+        habit.reposts = 0
         db_sess.add(habit)
         db_sess.commit()
 
-    return render_template("add_habit.html")
+    return render_template("add_habit.html", form=form)
 
 
 if __name__ == '__main__':

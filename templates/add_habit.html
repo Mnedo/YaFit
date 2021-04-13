@@ -1,24 +1,46 @@
 {% extends "base.html" %}
 
+
 {% block content %}
-<div class="page_border">
-<h1>Добавление привычки</h1>
-<form action method="post">
-<div class="mb-3">
-  <label for="exampleFormControlInput1" class="form-label">Название вашей привычки</label>
-  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Употребление воды",
-  name="habit_name">
+<div class="btn-toolbar justify-content-between">
+    <h3></h3>
 </div>
-<div class="mb-3">
-  <label for="exampleFormControlInput2" class="form-label">Планируемый период соблюдения (дней)</label>
-  <input type="number" class="form-control" id="exampleFormControlInput2" placeholder="Целое число"
-  name="habit_duration">
-</div>
-<div class="mb-3">
-  <label for="exampleFormControlTextarea1" class="form-label">Описание вашей привычки</label>
-  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="habit_description"></textarea>
-</div>
-  <a class="btn btn-primary" href="/" id="submit" name="submit" type="submit">Сохранить</a>
+
+<form action="" method="post">
+    <div class="form_black">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.habit_name.label }}<br>
+            {{ form.habit_name(class="form-control") }}<br>
+            {% for error in form.habit_name.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.duration.label }}<br>
+            {{ form.duration(class="form-control") }}<br>
+            {% for error in form.duration.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endfor %}
+        </p>
+        <p>
+            {{ form.about_habit.label }}<br>
+            {{ form.about_habit(class="form-control") }}<br>
+            {% for error in form.about_habit.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endfor %}
+        </p>
+
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+
+        {{message}}
+    </div>
+
 </form>
-</div>
 {% endblock %}
