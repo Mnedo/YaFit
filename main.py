@@ -162,6 +162,11 @@ def add_habit():
     return render_template("add_habit.html", form=form)
 
 
+@app.route("/office", methods=['GET', 'POST'])
+def my_office():
+    return render_template('office.html')
+
+
 if __name__ == '__main__':
     app.run()
     # port = int(os.environ.get("PORT", 5000))

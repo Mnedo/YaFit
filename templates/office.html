@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="btn-toolbar justify-content-between">
+    <h3></h3>
+</div>
+
+<form action="" method="post">
+    <div align="right" width="200" height="1">
+        <html>
+        <head>
+            <style type="text/css">
+            #info { position: absolute; }
+            #info {
+            top: 120px;
+            left: 430px;
+            bottom: 500px; right: 110px;
+            }
+        </style>
+        </head>
+        <body>
+        <img src="http://apxangel.ru/wp-content/uploads/2011/12/i_love_you_yandex.jpg"
+             align="left" width="150" height="150"/>
+        <div class="card" style="width: 18rem;" id="info">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Иван</li>
+                <li class="list-group-item">ВВВ</li>
+                <li class="list-group-item">М</li>
+                <li class="list-group-item">20</li>
+            </ul>
+            <button type="button" class="btn btn-primary">Изменить</button>
+        </div>
+        </body>
+        </html>
+    </div>
+    <div align="right" width="200" height="1">
+        <html>
+        <head>
+            <style type="text/css">
+            #infoo { position: absolute; }
+            #infoo {
+            top: 120px;
+            left: 250px;
+            bottom: 400px; right: 90px;
+            }
+        </style>
+        </head>
+        <body>
+        <div class="card" style="width: 10rem;" id="infoo">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Имя</li>
+                <li class="list-group-item">Никнейм</li>
+                <li class="list-group-item">Пол</li>
+                <li class="list-group-item">Возраст</li>
+            </ul>
+        </div>
+        </body>
+        </html>
+    </div>
+</form>
+
+{% endblock %}
