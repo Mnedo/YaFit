@@ -67,3 +67,11 @@ hr {
    border-radius: 10px;
 }
 
+.round {
+    margin-left:15px;
+    margin-right:15px;
+    width:125px;
+    height: 125px;
+    border-radius: 125px !important;
+    box-shadow: 0 0 7px black;
+   }
