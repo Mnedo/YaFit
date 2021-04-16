@@ -12,6 +12,7 @@ from data.comments import Comments
 from data.habits import Habits
 from data.news import News
 from data.users import User
+from forms.CommentForm import ComForm
 from forms.RegisterForm import RegisterForm
 from forms.AddHabit import AddHabitForm
 
@@ -161,6 +162,30 @@ def add_habit():
         db_sess.commit()
         return redirect('/')
     return render_template("add_habit.html", form=form)
+
+
+@app.route("/add_habit/<int:habit_id>", methods=['GET', 'POST'])
+def repost_habit(habit_id):
+    pass
+    # special for Narek
+
+
+@app.route("/com_add/<int:new_id>", methods=['GET', 'POST'])
+def comm_add(new_id):
+    form = ComForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        to_new = db_sess.query(News).filter(News.id == new_id).first()
+        idd = len(db_sess.query(Comments).all())
+        to_new.comms = str(to_new.comms) + ';{}'.format(idd)
+        com = Comments()
+        com.user_id = current_user.id
+        com.content = form.content.data
+        db_sess.add(com)
+        db_sess.add(to_new)
+        db_sess.commit()
+        return redirect('/')
+    return render_template("add_com.html", form=form)
 
 
 @app.route("/office", methods=['GET', 'POST'])
