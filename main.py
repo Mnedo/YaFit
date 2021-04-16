@@ -145,20 +145,21 @@ def about_page():
     return render_template('about.html')
 
 
-@app.route("/add_habit",  methods=['GET', 'POST'])
+@app.route("/add_habit", methods=['GET', 'POST'])
 def add_habit():
     form = AddHabitForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         habit = Habits()
+        habit.creator = current_user.id
+        habit.count = 0
+        habit.reposts = 0
         habit.type = form.habit_name.data
         habit.period = form.duration.data
         habit.about_link = form.about_habit.data
-        habit.count = 0
-        habit.reposts = 0
         db_sess.add(habit)
         db_sess.commit()
-
+        return redirect('/')
     return render_template("add_habit.html", form=form)
 
 
