@@ -1,13 +1,13 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_restful import Api
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
 from wtforms import PasswordField, BooleanField, SubmitField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
-# import wikipedia
-from data import db_session
+from data import db_session, user_resources, habit_resources, news_resources, comments_resources
 from data.comments import Comments
 from data.habits import Habits
 from data.news import News
@@ -18,6 +18,15 @@ from forms.AddHabit import AddHabitForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+api = Api(app)
+api.add_resource(user_resources.UsersResource, '/api/v1/users/<int:users_id>')
+api.add_resource(user_resources.UsersListResource, '/api/v1/users')
+api.add_resource(news_resources.NewsResource, '/api/v1/news/<int:news_id>')
+api.add_resource(news_resources.NewsListResource, '/api/v1/news')
+api.add_resource(habit_resources.HabitsResource, '/api/v1/habits/<int:habits_id>')
+api.add_resource(habit_resources.HabitsListResource, '/api/v1/habits')
+api.add_resource(comments_resources.CommentsResource, '/api/v1/comments/<int:comments_id>')
+api.add_resource(comments_resources.CommentsListResource, '/api/v1/comments')
 db_session.global_init("db/habits.db")
 db_sess = db_session.create_session()
 login_manager = LoginManager()
@@ -176,7 +185,7 @@ def comm_add(new_id):
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         to_new = db_sess.query(News).filter(News.id == new_id).first()
-        idd = len(db_sess.query(Comments).all())
+        idd = len(db_sess.query(Comments).all()) + 1
         to_new.comms = str(to_new.comms) + ';{}'.format(idd)
         com = Comments()
         com.user_id = current_user.id
