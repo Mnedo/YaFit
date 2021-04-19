@@ -2,62 +2,71 @@
 
 {% block content %}
 
+
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <link rel="stylesheet" href="/static/css/style.css?<?=time()?>">-->
+<!--    <title>Document</title>-->
+<!--    <style>-->
+<!--.vertical-menu {-->
+<!--    width: 200px;-->
+<!--    height: 150px;-->
+<!--    overflow-y: auto;-->
+<!--}-->
+<!--    </style>>-->
+<!--</head>-->
+<body>
 <div class="btn-toolbar justify-content-between">
     <h3></h3>
 </div>
-
 <form action="" method="post">
-    <div align="right" width="200" height="1">
-        <html>
-        <head>
-            <style type="text/css">
-            #info { position: absolute; }
-            #info {
-            top: 120px;
-            left: 430px;
-            bottom: 500px; right: 110px;
-            }
-        </style>
-        </head>
-        <body>
+    <div class="page_border">
         <img src="http://apxangel.ru/wp-content/uploads/2011/12/i_love_you_yandex.jpg"
              align="left" width="150" height="150"/>
-        <div class="card" style="width: 18rem;" id="info">
+        <div class="info">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Иван</li>
-                <li class="list-group-item">ВВВ</li>
-                <li class="list-group-item">М</li>
-                <li class="list-group-item">20</li>
-            </ul>
-            <button type="button" class="btn btn-primary">Изменить</button>
-        </div>
-        </body>
-        </html>
-    </div>
-    <div align="right" width="200" height="1">
-        <html>
-        <head>
-            <style type="text/css">
-            #infoo { position: absolute; }
-            #infoo {
-            top: 120px;
-            left: 250px;
-            bottom: 400px; right: 90px;
-            }
-        </style>
-        </head>
-        <body>
-        <div class="card" style="width: 10rem;" id="infoo">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Имя</li>
-                <li class="list-group-item">Никнейм</li>
-                <li class="list-group-item">Пол</li>
-                <li class="list-group-item">Возраст</li>
+                <input type="text" size="60" value="{{current_user.name}}"><Br>
+                <input type="text" size="60" value="{{current_user.surname}}"><Br>
+                <input type="text" size="60" value="{{current_user.nickname}}"><Br>
+                <input type="text" size="60" value="{{current_user.age}}"><Br>
+                <input type="text" size="60" value="{{current_user.city_from}}"><Br>
+                <input type="text" size="60" value="{{current_user.email}}"><Br>
+                <input type="text" size="60" value="{{current_user.password}}"><Br>
             </ul>
         </div>
-        </body>
-        </html>
+        <div class="about_info">
+            <ul class="list-group list-group-flush">
+                <p>Имя</p>
+                <p></p>
+                <p>Фамилия</p>
+                <p></p>
+                <p>Никнейм</p>
+                <p></p>
+                <p>Возраст</p>
+                <p></p>
+                <p>Город</p>
+                <p></p>
+                <p>Логин</p>
+                <p></p>
+                <p>Пароль</p>
+            </ul>
+        </div>
+        <div class="vertical-menu">
+            <ul class="list-group list-group-flush">
+<!--для наглядности список из цифр-->
+                {% for habit in [11, 21, 31, 41, 3, 4, 5, 6, 7, 9,8, 8, 9,9, 9,9 ] %}
+                <p>
+                    {{ habit }}
+                </p>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="save">
+            <button type="button" class="btn btn-primary">Сохранить</button>
+        </div>
     </div>
 </form>
+</body>
 
 {% endblock %}
