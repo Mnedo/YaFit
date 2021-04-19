@@ -174,19 +174,22 @@ def add_habit():
     return render_template("add_habit.html", form=form)
 
 
-# @app.route("/add_habit/<int:habit_id>", methods=['GET', 'POST'])
-# def repost_habit(habit_id):
-#     habit_id = habit_id
-#     db_sess = db_session.create_session()
-#     to_new = db_sess.query(User).filter(User.id == current_user.id).first()
-#     to_new.habit = to_new.habit + ';' + str(habit_id)
-#     db_sess.add(to_new)
-#
-#     to_new = db_sess.query(Habits).filter(Habits.id == habit_id).first()
-#     to_new.reposts = str(int(to_new.reposts) + 1)
-#     db_sess.add(to_new)
-#
-#     db_sess.commit()
+@app.route("/add_habit/<int:habit_id>", methods=['GET', 'POST'])
+def repost_habit(habit_id):
+    habit_id = habit_id
+    db_sess = db_session.create_session()
+    to_new = db_sess.query(User).filter(User.id == current_user.id).first()
+    if to_new.habit and str(habit_id) not in str(to_new.habit):
+        to_new.habit = str(to_new.habit) + ';' + str(habit_id)
+    else:
+        to_new.habit = str(habit_id)
+    db_sess.add(to_new)
+
+    to_new = db_sess.query(Habits).filter(Habits.id == habit_id).first()
+    to_new.reposts = str(int(to_new.reposts) + 1)
+    db_sess.add(to_new)
+    db_sess.commit()
+    return redirect('/')
 
 
 @app.route("/com_add/<int:new_id>", methods=['GET', 'POST'])
@@ -219,13 +222,12 @@ def add_news():
         db_sess = db_session.create_session()
         news = News()
         news.user_id = current_user.id
-        news.title = form.news_name
-        news.content = form.news_content
+        news.title = form.news_name.data
+        news.content = form.news_content.data
         db_sess.add(news)
         db_sess.commit()
         return redirect('/')
     return render_template("add_news.html", form=form)
-
 
 
 if __name__ == '__main__':
