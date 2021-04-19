@@ -66,6 +66,14 @@ hr {
    width: 25%;
    border-radius: 10px;
 }
+.round_avatar {
+    margin-left:10px;
+    margin-right:10px;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50px !important;
+    box-shadow: 0 0 3px black;
+   }
 
 .round {
     margin-left:15px;
