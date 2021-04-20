@@ -127,7 +127,7 @@ def index():
                          'comms': comments,
                          'creator': creator_nickname,
                          'path': path})
-        if news_index == 5:
+        if news_index == 3:
             break
     return render_template("index.html", top_habits=top_habits, top_news=top_news)
 
@@ -192,9 +192,9 @@ def repost_habit(habit_id):
         to_new.habit = str(habit_id)
     db_sess.add(to_new)
 
-    to_new = db_sess.query(Habits).filter(Habits.id == habit_id).first()
-    to_new.reposts = str(int(to_new.reposts) + 1)
-    db_sess.add(to_new)
+    to_new2 = db_sess.query(Habits).filter(Habits.id == habit_id).first()
+    to_new2.reposts = str(int(to_new2.reposts) + 1)
+    db_sess.add(to_new2)
     db_sess.commit()
     return redirect('/')
 
@@ -278,6 +278,49 @@ def add_news():
         db_sess.commit()
         return redirect('/')
     return render_template("add_news.html", form=form)
+
+
+@app.route("/news", methods=['GET', 'POST'])
+def news():
+    db_sess = db_session.create_session()
+    rec_news = db_sess.query(News).all()
+    top_news = []
+    news_index = 0
+    for news in rec_news:
+        news_index += 1
+        creator_nickname = (db_sess.query(User).filter(User.id == news.user_id).first()).nickname
+        for images in os.listdir('static/img/users_photo'):
+            if images == creator_nickname:
+                path = images
+        path = 'static/img/users_photo/default.jpg'
+        comments = []
+        if news.comms:
+            if ';' in news.comms:
+                for com_id in news.comms.split(';'):
+                    comments.append(db_sess.query(Comments).filter(Comments.id == com_id).first())
+            elif len(news.comms) == 1:
+                com_id = news.comms
+                comments = [db_sess.query(Comments).filter(Comments.id == com_id).first()]
+        else:
+            comments = []
+        if len(comments) > 1:
+            comments = sorted(comments, key=lambda x: x.created_date)
+        comments_main = []
+        for com in comments:
+            comentor_nickname = db_sess.query(User).filter(User.id == com.user_id).first().nickname
+            comments_main.append({'id': com.id,
+                                  'content': com.content,
+                                  'created_date': com.created_date.strftime("%A %d %B %Y"),
+                                  'creator': comentor_nickname})
+        comments = comments_main
+        top_news.append({'id': news.id,
+                         'title': news.title,
+                         'content': news.content,
+                         'created_date': news.created_date.strftime("%A %d %B %Y"),
+                         'comms': comments,
+                         'creator': creator_nickname,
+                         'path': path})
+    return render_template("news.html", top_news=top_news)
 
 
 if __name__ == '__main__':
