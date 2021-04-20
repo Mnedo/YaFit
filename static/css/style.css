@@ -104,8 +104,17 @@ hr {
 }
 
 .save {
+    position: absolute;
     width: 250px;
     height: 250px;
+    margin-top: -130px;
+}
+
+.foto {
+    position: absolute;
+    width: 250px;
+    height:250px;
+    margin-top: -180px;
 }
 
 .info {
