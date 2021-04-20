@@ -17,57 +17,57 @@
 <!--    </style>>-->
 <!--</head>-->
 <body>
-<div class="btn-toolbar justify-content-between">
-    <h3></h3>
-</div>
-<form action="" method="post">
+<!--<div class="btn-toolbar justify-content-between">-->
+<!--    <h3></h3>-->
+<!--</div>-->
+<form action="" method="post" enctype="multipart/form-data" accept="image/jpeg">
     <div class="page_border">
-        <img src="http://apxangel.ru/wp-content/uploads/2011/12/i_love_you_yandex.jpg"
-             align="left" width="150" height="150"/>
-        <div class="info">
-            <ul class="list-group list-group-flush">
-                <input type="text" size="60" value="{{current_user.name}}"><Br>
-                <input type="text" size="60" value="{{current_user.surname}}"><Br>
-                <input type="text" size="60" value="{{current_user.nickname}}"><Br>
-                <input type="text" size="60" value="{{current_user.age}}"><Br>
-                <input type="text" size="60" value="{{current_user.city_from}}"><Br>
-                <input type="text" size="60" value="{{current_user.email}}"><Br>
-                <input type="text" size="60" value="{{current_user.password}}"><Br>
-            </ul>
-        </div>
-        <div class="about_info">
-            <ul class="list-group list-group-flush">
-                <p>Имя</p>
-                <p></p>
-                <p>Фамилия</p>
-                <p></p>
-                <p>Никнейм</p>
-                <p></p>
-                <p>Возраст</p>
-                <p></p>
-                <p>Город</p>
-                <p></p>
-                <p>Логин</p>
-                <p></p>
-                <p>Пароль</p>
-            </ul>
-        </div>
-        <div class="vertical-menu">
-            <ul class="list-group list-group-flush">
-<!--для наглядности список из цифр-->
-                {% for habit in [11, 21, 31, 41, 3, 4, 5, 6, 7, 9,8, 8, 9,9, 9,9 ] %}
-                <p>
-                    {{ habit }}
-                </p>
-                {% endfor %}
-            </ul>
-        </div>
-         <div class="foto">
-            <button type="button" class="btn btn-primary">Изменить фото</button>
-        </div>
-        <div class="save">
-            <button type="button" class="btn btn-primary">Сохранить</button>
-        </div>
+        {{ form.hidden_tag() }}
+        <p><img src="http://apxangel.ru/wp-content/uploads/2011/12/i_love_you_yandex.jpg"
+                align="left" width="150" height="150"/>
+            <input type="file" class="form-group" id="photo" name="file">
+        </p>
+        <p>
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+            {{ form.surname.label }}
+            {{ form.surname(class="form-control") }}</p>
+        <p>
+            {{ form.nickname.label }}
+            {{ form.nickname(class="form-control") }}
+            {{ form.age.label }}
+            {{ form.age(class="form-control") }}</p>
+        <p>
+            {{ form.status.label }}
+            {{ form.status(class="form-control") }}</p>
+        <p>
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            {{ form.city_from.label }}
+            {{ form.city_from(class="form-control") }}</p>
+        <p>
+            {{ form.hashed_password.label }}
+            {{ form.hashed_password(class="form-control", type="password") }}</p>
+        <p>
+            {{ form.about.label }}
+            {{ form.about(class="form-control") }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+<!--        <div class="vertical-menu">-->
+<!--            <ul class="list-group list-group-flush">-->
+<!--&lt;!&ndash;для наглядности список из цифр-->
+<!--                {% for habit in [11, 21, 31, 41, 3, 4, 5, 6, 7, 9,8, 8, 9,9, 9,9 ] %}-->
+<!--                <p>-->
+<!--                    {{ habit }}-->
+<!--                </p>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--         <div class="foto">-->
+<!--            <button type="button" class="btn btn-primary">Изменить фото</button>-->
+<!--        </div>-->
+<!--        <div class="save">-->
+<!--            <button type="button" class="btn btn-primary">Сохранить</button>-->
+<!--        </div>&ndash;&gt;-->
     </div>
 </form>
 </body>
