@@ -16,7 +16,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" style="width: 250px;" href="/">
-                <img src="/static/img/YaFit_logo.png" alt="" width="26" height="18" class="d-inline-block text-align-center" style="margin-bottom:5px;">
+                <img src="/static/img/YaFit_logo.png" alt="" width="26" height="18"
+                     class="d-inline-block text-align-center" style="margin-bottom:5px;">
                 YaFit
             </a>
             <div class="collapse navbar-collapse">
@@ -34,13 +35,13 @@
                         <a class="nav-link active" style="width: 200px;" href="/office">Профиль</a>
                 </ul>
                 {% if current_user.is_authenticated %}
-                    <a class="navbar-brand" href="/logout">{{current_user.nickname}}</a>
-                    {% else %}
-                    <p>
-                        <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-                        <a class="btn btn-success" href="/login">Войти</a>
-                    </p>
-                    {% endif %}
+                <a class="navbar-brand" href="/logout">{{current_user.nickname}}</a>
+                {% else %}
+                <p>
+                    <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+                    <a class="btn btn-success" href="/login">Войти</a>
+                </p>
+                {% endif %}
 
             </div>
         </div>

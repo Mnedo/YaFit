@@ -94,13 +94,18 @@ def index():
     news_index = 0
     for news in rec_news:
         news_index += 1
-        creator_nickname = (db_sess.query(User).filter(User.id == habit.creator).first()).nickname
+        creator_nickname = (db_sess.query(User).filter(User.id == news.user_id).first()).nickname
+        for images in os.listdir('static/img/users_photo'):
+            if images == creator_nickname:
+                path = images
+        path = 'static/img/users_photo/default.jpg'
         comments = []
         if news.comms:
             if ';' in news.comms:
                 for com_id in news.comms.split(';'):
                     comments.append(db_sess.query(Comments).filter(Comments.id == com_id).first())
             elif len(news.comms) == 1:
+                com_id = news.comms
                 comments = [db_sess.query(Comments).filter(Comments.id == com_id).first()]
         else:
             comments = []
@@ -108,7 +113,7 @@ def index():
             comments = sorted(comments, key=lambda x: x.created_date)
         comments_main = []
         for com in comments:
-            comentor_nickname = db_sess.query(User).filter(User.id == habit.creator).first().nickname
+            comentor_nickname = db_sess.query(User).filter(User.id == com.user_id).first().nickname
             comments_main.append({'id': com.id,
                                   'content': com.content,
                                   'created_date': com.created_date.strftime("%A %d %B %Y"),
@@ -119,7 +124,8 @@ def index():
                          'content': news.content,
                          'created_date': news.created_date.strftime("%A %d %B %Y"),
                          'comms': comments,
-                         'creator': creator_nickname})
+                         'creator': creator_nickname,
+                         'path': path})
         if news_index == 5:
             break
     return render_template("index.html", top_habits=top_habits, top_news=top_news)
