@@ -43,7 +43,7 @@ YaFit - не теряй возможности
 > Может быть использован `Python 3.7`, остальные версии не рекомендуются, но могут быть использованы.
 * Хостингом от Heroku
 > Подробнее на сайте [heroku](https://heroku.com/)
-* Названия библиотек написаны в [repo](https://github.com/Mnedo/YaFit/blob/master/requirements.txt), рекомендуем ознакомиться!
+* Названия библиотек написаны в [requirements.txt](https://github.com/Mnedo/YaFit/blob/master/requirements.txt), рекомендуем ознакомиться!
 
 ---
 
