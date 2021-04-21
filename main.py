@@ -241,7 +241,7 @@ def my_office():
         else:
             abort(404)
     if form.validate_on_submit():
-        if '.jpg' in request.files['file']:
+        if '.jpg' in str(request.files['file']) or '.png' in str(request.files['file']):
             input_file = request.files['file']
             new_img = open("static/img/users_photo/" + str(current_user.nickname) + ".jpg", 'wb')
             new_img.write(input_file.read())
@@ -257,7 +257,6 @@ def my_office():
             user.email = form.email.data
             user.hashed_password = form.hashed_password.data
             user.city_from = form.city_from.data
-            db_sess.merge(current_user)
             db_sess.commit()
             return redirect('/office')
         else:
