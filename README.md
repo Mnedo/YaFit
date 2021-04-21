@@ -61,3 +61,25 @@ YaFit - не теряй возможности
 ---
 
 Наш сайт: https://yafit.herokuapp.com/
+
+---
+
+## 7. Api специально для 'разработчиков' ##
+На нашем сайте присутствует Api. Оно позваляет взаимодействовать с базой данных, с ее сущностями.  
+_APIKEY НЕ НУЖЕН_  
+
+ Предлагаемые ресурсы:  
+ * Users  
+ /api/v1/users/<int:users_id> - информация о конкретном user  
+/api/v1/users - все users  
+ * News  
+/api/v1/news/<int:news_id>  - информация о конкретной новости  
+ /api/v1/news - все новости  
+ * Habits  
+ /api/v1/habits/<int:habits_id> - инофрмация об одной привычке  
+ /api/v1/habits - все привычки  
+ * Comments  
+ /api/v1/comments/<int:comments_id> - информация об одном комментарии  
+ /api/v1/comments - все комментарии   
+Сущности, с которыми вы работаете:  
+![Habits.db](https://github.com/Mnedo/YaFit/blob/master/static/img/Db_for_api.jpg)
