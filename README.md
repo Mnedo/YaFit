@@ -33,7 +33,7 @@ YaFit - не теряй возможности
 * API
 > Разработчикам, получайте новую информацию напрямую из системы.
 * Документация + [тесты](https://github.com/Mnedo/YaFit/blob/master/data/resource_test.py)
-> Итог работы,  немного тестов для проверки себя.
+> Итог работы, немного тестов для проверки себя.
 
 ---
 
@@ -43,7 +43,7 @@ YaFit - не теряй возможности
 > Может быть использован `Python 3.7`, остальные версии не рекомендуются, но могут быть использованы.
 * Хостингом от Heroku
 > Подробнее на сайте [heroku](https://heroku.com/)
-* Названия библиотек написаны в [repo](https://github.com/Mnedo/YaFit/blob/master/requirements.txt), рекомендуем ознакомиться!
+* Названия библиотек написаны в [requirements.txt](https://github.com/Mnedo/YaFit/blob/master/requirements.txt), рекомендуем ознакомиться!
 
 ---
 
@@ -61,3 +61,25 @@ YaFit - не теряй возможности
 ---
 
 Наш сайт: https://yafit.herokuapp.com/
+
+---
+
+## 7. Api специально для 'разработчиков' ##
+На нашем сайте присутствует Api. Оно позволяет взаимодействовать с базой данных, с ее сущностями.  
+_APIKEY НЕ НУЖЕН_  
+
+ Предлагаемые ресурсы:  
+ * Users  
+ /api/v1/users/<int:users_id> - информация о конкретном user  
+/api/v1/users - все users  
+ * News  
+/api/v1/news/<int:news_id>  - информация о конкретной новости  
+ /api/v1/news - все новости  
+ * Habits  
+ /api/v1/habits/<int:habits_id> - информация об одной привычке  
+ /api/v1/habits - все привычки  
+ * Comments  
+ /api/v1/comments/<int:comments_id> - информация об одном комментарии  
+ /api/v1/comments - все комментарии   
+Сущности, с которыми вы работаете:  
+![Habits.db](https://github.com/Mnedo/YaFit/blob/master/static/img/Db_for_api.jpg)
