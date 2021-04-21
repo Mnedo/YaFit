@@ -74,6 +74,14 @@ hr {
     border-radius: 50px !important;
    }
 
+.round_office {
+    margin-left:10px;
+    margin-right:10px;
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 150px !important;
+}
+
 .round {
     margin-left:15px;
     margin-right:15px;
@@ -114,14 +122,6 @@ hr {
     width: 250px;
     height:250px;
     margin-top: -180px;
-}
-
-.info {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    margin-left: 350px;
-    margin-right: 600px;
 }
 
 .about_info {

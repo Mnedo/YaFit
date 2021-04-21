@@ -1,7 +1,9 @@
 import os
-from flask import Flask, render_template
+import random
+
+from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_restful import Api
+from flask_restful import Api, abort
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
 from wtforms import PasswordField, BooleanField, SubmitField
@@ -16,6 +18,7 @@ from forms.CommentForm import ComForm
 from forms.RegisterForm import RegisterForm
 from forms.AddHabit import AddHabitForm
 from forms.AddNews import AddNewsForm
+from forms.Office import OfficeForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -93,12 +96,14 @@ def index():
     top_news = []
     news_index = 0
     for news in rec_news:
+        path = ''
         news_index += 1
         creator_nickname = (db_sess.query(User).filter(User.id == news.user_id).first()).nickname
         for images in os.listdir('static/img/users_photo'):
-            if images == creator_nickname:
-                path = images
-        path = 'static/img/users_photo/default.jpg'
+            if images.split('.')[0] == creator_nickname:
+                path = 'static/img/users_photo/' + images
+        if path == '':
+            path = 'static/img/users_photo/default.jpg'
         comments = []
         if news.comms:
             if ';' in news.comms:
@@ -126,9 +131,9 @@ def index():
                          'comms': comments,
                          'creator': creator_nickname,
                          'path': path})
-        if news_index == 5:
+        if news_index == 3:
             break
-    return render_template("index.html", top_habits=top_habits, top_news=top_news)
+    return render_template("index.html", top_habits=top_habits, top_news=top_news, random_id=random.randint(1, 2 ** 16))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -191,9 +196,9 @@ def repost_habit(habit_id):
         to_new.habit = str(habit_id)
     db_sess.add(to_new)
 
-    to_new = db_sess.query(Habits).filter(Habits.id == habit_id).first()
-    to_new.reposts = str(int(to_new.reposts) + 1)
-    db_sess.add(to_new)
+    to_new2 = db_sess.query(Habits).filter(Habits.id == habit_id).first()
+    to_new2.reposts = str(int(to_new2.reposts) + 1)
+    db_sess.add(to_new2)
     db_sess.commit()
     return redirect('/')
 
@@ -217,8 +222,53 @@ def comm_add(new_id):
 
 
 @app.route("/office", methods=['GET', 'POST'])
+@login_required
 def my_office():
-    return render_template('office.html')
+    form = OfficeForm()
+    path = ''
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        if user:
+            form.name.data = user.name
+            form.surname.data = user.surname
+            form.nickname.data = user.nickname
+            form.age.data = user.age
+            form.status.data = user.status
+            form.email.data = user.email
+            form.hashed_password.data = user.hashed_password
+            form.city_from.data = user.city_from
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        if '.jpg' in request.files['file']:
+            input_file = request.files['file']
+            new_img = open("static/img/users_photo/" + str(current_user.nickname) + ".jpg", 'wb')
+            new_img.write(input_file.read())
+            new_img.close()
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        if user:
+            user.name = form.name.data
+            user.surname = form.surname.data
+            user.nickname = form.nickname.data
+            user.age = form.age.data
+            user.status = form.status.data
+            user.email = form.email.data
+            user.hashed_password = form.hashed_password.data
+            user.city_from = form.city_from.data
+            db_sess.merge(current_user)
+            db_sess.commit()
+            return redirect('/office')
+        else:
+            abort(404)
+    for images in os.listdir('static/img/users_photo'):
+        if images.split('.')[0] == current_user.nickname:
+            path = 'static/img/users_photo/' + images
+    if path == '':
+        path = 'static/img/users_photo/default.jpg'
+    return render_template('office.html',
+                           form=form, path=path, random_id=random.randint(1, 2 ** 16))
 
 
 @app.route("/add_news", methods=['GET', 'POST'])
@@ -234,6 +284,52 @@ def add_news():
         db_sess.commit()
         return redirect('/')
     return render_template("add_news.html", form=form)
+
+
+@app.route("/news", methods=['GET', 'POST'])
+def news():
+    db_sess = db_session.create_session()
+    rec_news = db_sess.query(News).all()
+    top_news = []
+    news_index = 0
+    path = 'static/img/users_photo/default.jpg'
+    for news in rec_news:
+        path = ''
+        news_index += 1
+        creator_nickname = (db_sess.query(User).filter(User.id == news.user_id).first()).nickname
+        for images in os.listdir('static/img/users_photo'):
+            if images.split('.')[0] == creator_nickname:
+                path = 'static/img/users_photo/' + images
+        if path == '':
+            path = 'static/img/users_photo/default.jpg'
+        comments = []
+        if news.comms:
+            if ';' in news.comms:
+                for com_id in news.comms.split(';'):
+                    comments.append(db_sess.query(Comments).filter(Comments.id == com_id).first())
+            elif len(news.comms) == 1:
+                com_id = news.comms
+                comments = [db_sess.query(Comments).filter(Comments.id == com_id).first()]
+        else:
+            comments = []
+        if len(comments) > 1:
+            comments = sorted(comments, key=lambda x: x.created_date)
+        comments_main = []
+        for com in comments:
+            comentor_nickname = db_sess.query(User).filter(User.id == com.user_id).first().nickname
+            comments_main.append({'id': com.id,
+                                  'content': com.content,
+                                  'created_date': com.created_date.strftime("%A %d %B %Y"),
+                                  'creator': comentor_nickname})
+        comments = comments_main
+        top_news.append({'id': news.id,
+                         'title': news.title,
+                         'content': news.content,
+                         'created_date': news.created_date.strftime("%A %d %B %Y"),
+                         'comms': comments,
+                         'creator': creator_nickname,
+                         'path': path})
+    return render_template("news.html", top_news=top_news, path=path, random_id=random.randint(1, 2 ** 16))
 
 
 if __name__ == '__main__':

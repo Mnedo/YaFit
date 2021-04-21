@@ -1,39 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Привычки -->
-<div class="page_border">
-    <h2>Сейчас в тренде &#128293;</h2>
-
-    {% for habit in top_habits%}
-    <hr>
-    <div class="menu_item">
-        <h3>{{habit['type']}}
-            <div class="reposts">
-                {{habit['reposts']}} reposts
-            </div>
-        </h3>
-    </div>
-    <div class="menu_item">
-        <p>{{habit['about_link']}}</p>
-    </div>
-    {% if current_user.is_authenticated %}
-    <div>
-        <a href="/add_habit/{{ habit['id'] }}" class="btn btn-warning">Добавить к себе</a>
-    </div>
-    {% endif %}
-    </hr>
-    {% endfor %}
-</div>
 <!-- Новости -->
 <div class="page_border">
-    <h2>Самое новое &#128172;</h2>
+    <h2>Новости &#128172;</h2>
     {% for new in top_news%}
     <div class="page_border" style="background-color: #121d2f !important;">
         <div class="menu_item">
-            <h3><a><img
+            <h3><a><a><img
                     src={{new['path']}}?dummy={{random_id}} alt="avatar"
-                    class="round_avatar"></a>{{new['creator']}}: {{new['title']}} </h3>
+                    class="round_avatar"></a></a>{{new['creator']}}: {{new['title']}} </h3>
         </div>
         <div class="reposts">
             <p>{{new['created_date']}}</p>
