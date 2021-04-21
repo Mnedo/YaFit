@@ -1,6 +1,5 @@
 import os
 import random
-
 from flask import Flask, render_template, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import Api, abort
@@ -225,7 +224,7 @@ def comm_add(new_id):
 @login_required
 def my_office():
     form = OfficeForm()
-    path = ''
+    pathu = ''
     if request.method == "GET":
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.id == current_user.id).first()
@@ -263,9 +262,10 @@ def my_office():
             abort(404)
     for images in os.listdir('static/img/users_photo'):
         if images.split('.')[0] == current_user.nickname:
-            path = 'static/img/users_photo/' + images
-    if path == '':
-        path = 'static/img/users_photo/default.jpg'
+            pathu = 'static/img/users_photo/' + images
+    if pathu == '':
+        pathu = 'static/img/users_photo/default.jpg'
+    print(pathu)
     db_sess = db_session.create_session()
     habits = db_sess.query(Habits).filter(Habits.creator == current_user.id).all()
     user_habits = []
@@ -317,7 +317,7 @@ def my_office():
                            'creator': creator_nickname,
                            'path': path})
     return render_template('office.html',
-                           form=form, path=path, random_id=random.randint(1, 2 ** 16), user_habits=user_habits,
+                           form=form, path=pathu, random_id=random.randint(1, 2 ** 16), user_habits=user_habits,
                            users_news=users_news)
 
 
