@@ -235,7 +235,6 @@ def my_office():
             form.age.data = user.age
             form.status.data = user.status
             form.email.data = user.email
-            form.hashed_password.data = user.hashed_password
             form.city_from.data = user.city_from
         else:
             abort(404)
@@ -254,7 +253,6 @@ def my_office():
             user.age = form.age.data
             user.status = form.status.data
             user.email = form.email.data
-            user.hashed_password = form.hashed_password.data
             user.city_from = form.city_from.data
             db_sess.commit()
             return redirect('/office')
@@ -265,7 +263,6 @@ def my_office():
             pathu = 'static/img/users_photo/' + images
     if pathu == '':
         pathu = 'static/img/users_photo/default.jpg'
-    print(pathu)
     db_sess = db_session.create_session()
     habits = db_sess.query(Habits).filter(Habits.creator == current_user.id).all()
     user_habits = []
