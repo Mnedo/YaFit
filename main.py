@@ -266,8 +266,59 @@ def my_office():
             path = 'static/img/users_photo/' + images
     if path == '':
         path = 'static/img/users_photo/default.jpg'
+    db_sess = db_session.create_session()
+    habits = db_sess.query(Habits).filter(Habits.creator == current_user.id).all()
+    user_habits = []
+    for habit in habits:
+        user_habits.append({
+            'id': habit.id,
+            'type': habit.type,
+            'period': habit.period,
+            'about_link': habit.about_link,
+            'count': habit.count,
+            'reposts': habit.reposts,
+            'creator': db_sess.query(User).filter(User.id == habit.creator).first().nickname,
+        })
+    unews = db_sess.query(News).filter(User.id == current_user.id).all()
+    users_news = []
+    for news in unews:
+        path = ''
+        creator_nickname = (db_sess.query(User).filter(User.id == news.user_id).first()).nickname
+        for images in os.listdir('static/img/users_photo'):
+            if images.split('.')[0] == creator_nickname:
+                path = 'static/img/users_photo/' + images
+        if path == '':
+            path = 'static/img/users_photo/default.jpg'
+        comments = []
+        if news.comms:
+            if ';' in news.comms:
+                for com_id in news.comms.split(';'):
+                    comments.append(db_sess.query(Comments).filter(Comments.id == com_id).first())
+            elif len(news.comms) == 1:
+                com_id = news.comms
+                comments = [db_sess.query(Comments).filter(Comments.id == com_id).first()]
+        else:
+            comments = []
+        if len(comments) > 1:
+            comments = sorted(comments, key=lambda x: x.created_date)
+        comments_main = []
+        for com in comments:
+            comentor_nickname = db_sess.query(User).filter(User.id == com.user_id).first().nickname
+            comments_main.append({'id': com.id,
+                                  'content': com.content,
+                                  'created_date': com.created_date.strftime("%A %d %B %Y"),
+                                  'creator': comentor_nickname})
+        comments = comments_main
+        users_news.append({'id': news.id,
+                           'title': news.title,
+                           'content': news.content,
+                           'created_date': news.created_date.strftime("%A %d %B %Y"),
+                           'comms': comments,
+                           'creator': creator_nickname,
+                           'path': path})
     return render_template('office.html',
-                           form=form, path=path, random_id=random.randint(1, 2 ** 16))
+                           form=form, path=path, random_id=random.randint(1, 2 ** 16), user_habits=user_habits,
+                           users_news=users_news)
 
 
 @app.route("/add_news", methods=['GET', 'POST'])
