@@ -1,3 +1,4 @@
+import datetime
 import os
 import random
 from flask import Flask, render_template, request
@@ -209,10 +210,14 @@ def comm_add(new_id):
         db_sess = db_session.create_session()
         to_new = db_sess.query(News).filter(News.id == new_id).first()
         idd = len(db_sess.query(Comments).all()) + 1
-        to_new.comms = str(to_new.comms) + ';{}'.format(idd)
+        if len(to_new.comms) > 0:
+            to_new.comms = str(to_new.comms) + ';{}'.format(idd)
+        else:
+            to_new.comms = idd
         com = Comments()
         com.user_id = current_user.id
         com.content = form.content.data
+        com.created_date = datetime.datetime.now()
         db_sess.add(com)
         db_sess.add(to_new)
         db_sess.commit()
