@@ -3,71 +3,39 @@
 {% block content %}
 
 
-<!--<html>-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <link rel="stylesheet" href="/static/css/style.css?<?=time()?>">-->
-<!--    <title>Document</title>-->
-<!--    <style>-->
-<!--.vertical-menu {-->
-<!--    width: 200px;-->
-<!--    height: 150px;-->
-<!--    overflow-y: auto;-->
-<!--}-->
-<!--    </style>>-->
-<!--</head>-->
 <body>
-<!--<div class="btn-toolbar justify-content-between">-->
-<!--    <h3></h3>-->
-<!--</div>-->
 <form action="" method="post" enctype="multipart/form-data" accept="image/jpeg">
     <div class="page_border">
         {{ form.hidden_tag() }}
-        <p><img src={{path}}?dummy={{random_id}} class="round_office"
-                align="left" width="150" height="150"/>
-            <input type="file" class="form-group" id="photo" name="file">
-        </p>
-        <p>
-            {{ form.name.label }}
-            {{ form.name(class="form-control") }}
-            {{ form.surname.label }}
-            {{ form.surname(class="form-control") }}</p>
-        <p>
-            {{ form.nickname.label }}
-            {{ form.nickname(class="form-control") }}
-            {{ form.age.label }}
-            {{ form.age(class="form-control") }}</p>
-        <p>
-            {{ form.status.label }}
-            {{ form.status(class="form-control") }}</p>
-        <p>
-            {{ form.email.label }}
-            {{ form.email(class="form-control") }}
-            {{ form.city_from.label }}
-            {{ form.city_from(class="form-control") }}</p>
-        <p>
-            {{ form.hashed_password.label }}
-            {{ form.hashed_password(class="form-control", type="password") }}</p>
-        <p>
-            {{ form.about.label }}
-            {{ form.about(class="form-control") }}</p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-<!--        <div class="vertical-menu">-->
-<!--            <ul class="list-group list-group-flush">-->
-<!--&lt;!&ndash;для наглядности список из цифр-->
-<!--                {% for habit in [11, 21, 31, 41, 3, 4, 5, 6, 7, 9,8, 8, 9,9, 9,9 ] %}-->
-<!--                <p>-->
-<!--                    {{ habit }}-->
-<!--                </p>-->
-<!--                {% endfor %}-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--         <div class="foto">-->
-<!--            <button type="button" class="btn btn-primary">Изменить фото</button>-->
-<!--        </div>-->
-<!--        <div class="save">-->
-<!--            <button type="button" class="btn btn-primary">Сохранить</button>-->
-<!--        </div>&ndash;&gt;-->
+        <div class="vertical-menu" style="width: 18rem;" id="info">
+            <div class="container px-4" style="width: 1000px !important;">
+                <div class="row gx-5">
+                    <div class="col" style="width: 300px !important;">
+                        <div><p><label><img src={{path}}?dummy={{random_id}} class="round_office"
+                                            align="left" width="150" height="150"/>
+                            <input type="file" id="photo" name="file" hidden>
+                        </label></div>
+                        <div style="margin-left: 62px;">{{ form.submit(type="submit", class="btn btn-primary")}}</div>
+                    </div>
+                    <div class="col" style="width: 300px !important;">
+                        <div>{{ form.name.label }}</div>
+                        <div>{{ form.name(class="form-control" ) }}</div>
+                        <div>{{ form.nickname.label }}</div>
+                        <div>{{ form.nickname(class="form-control" ) }}</div>
+                        <div>{{ form.email.label }}</div>
+                        <div>{{ form.email(class="form-control" ) }}</div>
+                    </div>
+                    <div class="col" style="width: 300px !important;">
+                        <div>{{ form.surname.label }}</div>
+                        <div>{{ form.surname(class="form-control" ) }}</div>
+                        <div>{{ form.age.label }}</div>
+                        <div>{{ form.age(class="form-control" ) }}</div>
+                        <div>{{ form.city_from.label }}</div>
+                        <div>{{ form.city_from(class="form-control" ) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 </body>
