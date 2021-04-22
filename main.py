@@ -133,7 +133,8 @@ def index():
                          'path': path})
         if news_index == 3:
             break
-    return render_template("index.html", top_habits=top_habits, top_news=top_news, random_id=random.randint(1, 2 ** 16))
+    return render_template("index.html", top_habits=top_habits, top_news=top_news, random_id=random.randint(1, 2 ** 16),
+                           title='Главная')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -164,7 +165,7 @@ def reqister():
 
 @app.route('/info', methods=['GET', 'POST'])
 def about_page():
-    return render_template('about.html')
+    return render_template('about.html', title='Информация')
 
 
 @app.route("/add_habit", methods=['GET', 'POST'])
@@ -172,6 +173,7 @@ def add_habit():
     form = AddHabitForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
+        hab_id = len(db_sess.query(Habits).all()) + 1
         habit = Habits()
         habit.creator = current_user.id
         habit.count = 0
@@ -181,8 +183,14 @@ def add_habit():
         habit.about_link = form.about_habit.data
         db_sess.add(habit)
         db_sess.commit()
-        return redirect('/')
-    return render_template("add_habit.html", form=form)
+        if current_user.habit:
+            current_user.habit += ';{}'.format(hab_id)
+        else:
+            current_user.habit = hab_id
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/office')
+    return render_template("add_habit.html", form=form, title='Добавление привычки')
 
 
 @app.route("/add_habit/<int:habit_id>", methods=['GET', 'POST'])
@@ -222,23 +230,13 @@ def comm_add(new_id):
         db_sess.add(to_new)
         db_sess.commit()
         return redirect('/')
-    return render_template("add_com.html", form=form)
+    return render_template("add_com.html", form=form, title='Добавить комментарий')
 
 
 @app.route("/office", methods=['GET', 'POST'])
 @login_required
 def my_office():
     pathu = ''
-    if request.method == "POST":
-        if request.form['add_button'] == 'Добавить привычку':
-            form = AddHabitForm()
-            return render_template('add_habit.html',
-                                   form=form)
-    if request.method == "POST":
-        if request.form['add_button'] == 'Добавить новость':
-            form = AddNewsForm()
-            return render_template('add_news.html',
-                                   form=form)
     form = OfficeForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
@@ -294,8 +292,7 @@ def my_office():
             'reposts': habit.reposts,
             'creator': db_sess.query(User).filter(User.id == habit.creator).first().nickname,
         })
-    unews = db_sess.query(News).filter(User.id == current_user.id).all()
-    print(User.id, current_user.id)
+    unews = db_sess.query(News).filter(News.user_id == current_user.id).all()
     users_news = []
     for news in unews:
         path = ''
@@ -334,7 +331,7 @@ def my_office():
                            'path': path})
     return render_template('office.html',
                            form=form, path=pathu, random_id=random.randint(1, 2 ** 16), user_habits=user_habits,
-                           users_news=users_news)
+                           users_news=users_news, title='Профиль')
 
 
 @app.route("/add_news", methods=['GET', 'POST'])
@@ -348,8 +345,8 @@ def add_news():
         news.content = form.news_content.data
         db_sess.add(news)
         db_sess.commit()
-        return redirect('/')
-    return render_template("add_news.html", form=form)
+        return redirect('/office')
+    return render_template("add_news.html", form=form, title='Добавить новость')
 
 
 @app.route("/news", methods=['GET', 'POST'])
@@ -395,10 +392,11 @@ def news():
                          'comms': comments,
                          'creator': creator_nickname,
                          'path': path})
-    return render_template("news.html", top_news=top_news, path=path, random_id=random.randint(1, 2 ** 16))
+    return render_template("news.html", top_news=top_news, path=path, random_id=random.randint(1, 2 ** 16),
+                           title='Лента')
 
 
 if __name__ == '__main__':
     # app.run()
     # port = int(os.environ.get("PORT", 5000))
-    app.run(host='127.0.0.1', port=2000)
+    app.run(host='127.0.0.1', port=5000)
