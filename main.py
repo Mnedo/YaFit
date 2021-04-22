@@ -152,7 +152,7 @@ def reqister():
                                    message="Такой пользователь уже есть")
         user = User(
             nickname=form.nickname.data,
-            name=form.nickname.data,
+            name=form.name.data,
             email=form.email.data,
             about=form.about.data,
         )
