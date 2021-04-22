@@ -46,7 +46,7 @@
                 <a href="/com_add/{{ new['id'] }}" class="btn btn-primary"
                    style=" height:25px; width:135px; font-size: 10px; margin-bottom:5px; margin-left: 30px;">Оставить
                     комментарий</a>
-                        {% endif %}
+                {% endif %}
             </h6>
             {% for com in new['comms'] %}
             <div class="com_label" style="margin-left: 20px; padding: 0; margin-top: 0; margin-bottom;">
@@ -56,13 +56,11 @@
                 </p></div>
             <hr style="color: white; background-color: white; padding: 0; margin-top: 0; margin-bottom;">
             {% endfor %}
-            </div>
-
-
         </div>
 
 
     </div>
+
 
     {% endfor %}
 
