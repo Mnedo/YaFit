@@ -192,7 +192,7 @@ def repost_habit(habit_id):
     to_new = db_sess.query(User).filter(User.id == current_user.id).first()
     if to_new.habit and str(habit_id) not in str(to_new.habit):
         to_new.habit = str(to_new.habit) + ';' + str(habit_id)
-    else:
+    if not to_new.habit:
         to_new.habit = str(habit_id)
     db_sess.add(to_new)
 
@@ -228,8 +228,18 @@ def comm_add(new_id):
 @app.route("/office", methods=['GET', 'POST'])
 @login_required
 def my_office():
-    form = OfficeForm()
     pathu = ''
+    if request.method == "POST":
+        if request.form['add_button'] == 'Добавить привычку':
+            form = AddHabitForm()
+            return render_template('add_habit.html',
+                                   form=form)
+    if request.method == "POST":
+        if request.form['add_button'] == 'Добавить новость':
+            form = AddNewsForm()
+            return render_template('add_news.html',
+                                   form=form)
+    form = OfficeForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.id == current_user.id).first()
@@ -269,7 +279,10 @@ def my_office():
     if pathu == '':
         pathu = 'static/img/users_photo/default.jpg'
     db_sess = db_session.create_session()
-    habits = db_sess.query(Habits).filter(Habits.creator == current_user.id).all()
+    habits = []
+    if current_user.habit:
+        for el in current_user.habit.split(';'):
+            habits.append(db_sess.query(Habits).filter(Habits.id == el).first())
     user_habits = []
     for habit in habits:
         user_habits.append({
@@ -282,6 +295,7 @@ def my_office():
             'creator': db_sess.query(User).filter(User.id == habit.creator).first().nickname,
         })
     unews = db_sess.query(News).filter(User.id == current_user.id).all()
+    print(User.id, current_user.id)
     users_news = []
     for news in unews:
         path = ''

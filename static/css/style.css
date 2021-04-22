@@ -106,3 +106,13 @@ hr {
 .vertical-menu li:hover {
     background-color: #fff;
 }
+
+.circle_habits {
+    background-color: #1A4780 !important;
+    color: white !important;
+    border: 2px solid #CF9B8F;
+    border-radius: 10px;
+    padding: 20px !important;
+    margin: 0 auto;
+    margin-top: 30px;
+}
