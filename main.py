@@ -39,11 +39,19 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    load_user - функция загрузки пользователя
+    :param user_id: id user в базе данных
+    :return: возвращается экземпляр класса User с нужным id
+    """
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
 
 class LoginForm(FlaskForm):
+    """
+    Форма входа в существующий аккаунт
+    """
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
@@ -52,6 +60,10 @@ class LoginForm(FlaskForm):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Обработка страницы /login - входа в существующий аккаунт
+    :return: шаблон страницы с полями для ввода или ошибкой, в случае успешного ввода, user попадает на главную
+    """
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -61,19 +73,27 @@ def login():
             return redirect("/")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
-                               form=form)
+                               form=form, title='Авторизация')
     return render_template('login.html', title='Авторизация', form=form)
 
 
 @app.route('/logout')
 @login_required
 def logout():
+    """
+    Выход пользователя из аккаунта
+    :return: выход на главную (без аккаунта)
+    """
     logout_user()
     return redirect("/")
 
 
 @app.route("/")
 def index():
+    """
+    Обработка главной страницы; формирование словарей(json: top_news, top_habits), которые определяют содержание главной страницы
+    :return: шаблон главной страницы
+    """
     db_sess = db_session.create_session()
     habits = db_sess.query(Habits).all()
     habits = sorted(habits, key=lambda x: -int(x.reposts))
@@ -139,6 +159,10 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
+    """
+    Обработка регистрации
+    :return: форма регистрации
+    """
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -165,11 +189,19 @@ def reqister():
 
 @app.route('/info', methods=['GET', 'POST'])
 def about_page():
+    """
+    Обработка информационной страницы
+    :return: шаблон страницы
+    """
     return render_template('about.html', title='Информация')
 
 
 @app.route("/add_habit", methods=['GET', 'POST'])
 def add_habit():
+    """
+    Добавление привычки
+    :return: шаблон для добавления
+    """
     form = AddHabitForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -195,6 +227,11 @@ def add_habit():
 
 @app.route("/add_habit/<int:habit_id>", methods=['GET', 'POST'])
 def repost_habit(habit_id):
+    """
+    Обработка репоста к себе привычки
+    :param habit_id: id привычки в DB
+    :return: главная страница(обновленная DB)
+    """
     habit_id = habit_id
     db_sess = db_session.create_session()
     to_new = db_sess.query(User).filter(User.id == current_user.id).first()
@@ -213,6 +250,11 @@ def repost_habit(habit_id):
 
 @app.route("/com_add/<int:new_id>", methods=['GET', 'POST'])
 def comm_add(new_id):
+    """
+    Обработка добавления комментария
+    :param new_id: id новости в DB, к которой добавляется комментарий
+    :return: форма для добавления комментария
+    """
     form = ComForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -236,6 +278,10 @@ def comm_add(new_id):
 @app.route("/office", methods=['GET', 'POST'])
 @login_required
 def my_office():
+    """
+    Обработка страницы профиля
+    :return: страничка user
+    """
     pathu = ''
     form = OfficeForm()
     if request.method == "GET":
@@ -336,6 +382,10 @@ def my_office():
 
 @app.route("/add_news", methods=['GET', 'POST'])
 def add_news():
+    """
+    Обработка добавления новости
+    :return: шаблон для добавления
+    """
     form = AddNewsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -351,6 +401,10 @@ def add_news():
 
 @app.route("/news", methods=['GET', 'POST'])
 def news():
+    """
+    Страница ленты
+    :return: лента новостей
+    """
     db_sess = db_session.create_session()
     rec_news = db_sess.query(News).all()
     top_news = []
