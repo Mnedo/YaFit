@@ -308,7 +308,6 @@ def my_office():
         if user:
             user.name = form.name.data
             user.surname = form.surname.data
-            user.nickname = form.nickname.data
             user.age = form.age.data
             user.status = form.status.data
             user.email = form.email.data
